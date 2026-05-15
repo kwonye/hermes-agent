@@ -1199,7 +1199,8 @@ function Install-NodeDeps {
         return
     }
     # Emit informational messages about which npm shim is in use.
-    $npmRaw = (Get-Command npm -ErrorAction SilentlyContinue)?.Source
+    $npmCmd = Get-Command npm -ErrorAction SilentlyContinue
+    $npmRaw = if ($npmCmd) { $npmCmd.Source } else { $null }
     if ($npmRaw -and $npmRaw -like "*.ps1" -and $npmExe -ne $npmRaw) {
         Write-Info "Using npm.cmd (PowerShell execution policy blocks npm.ps1)"
     } elseif ($npmRaw -and $npmRaw -like "*.ps1" -and $npmExe -eq $npmRaw) {
