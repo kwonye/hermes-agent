@@ -158,6 +158,7 @@ function processStartTime(pid: number): number | null {
       // Render in UTC because local `lstart` repeats an hour when DST ends.
       const lstart = execFileSync('ps', ['-p', String(pid), '-o', 'lstart='], { encoding: 'utf8', timeout: 30_000,
         env: { ...process.env, LC_ALL: 'C', TZ: 'UTC0' }, stdio: ['ignore', 'pipe', 'pipe'] }).trim()
+
       const started = Date.parse(`${lstart} GMT`) / 1000
 
       return Number.isNaN(started) ? null : started

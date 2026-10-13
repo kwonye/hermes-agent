@@ -160,6 +160,7 @@ test.runIf(process.platform === 'linux' || process.platform === 'darwin')('a sha
       child.once('error', reject)
       child.stdout.once('data', (data: Buffer): void => resolve(Number(data.toString().trim())))
     })
+
     const record = { pid: child.pid, purpose: 'serve', host: '127.0.0.1', port, create_time: spawnedAt }
     const ledger = path.join(root, 'spawn-ledger.json')
 
