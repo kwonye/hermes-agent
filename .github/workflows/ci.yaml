@@ -494,12 +494,14 @@ jobs:
   # points straight at that report.
   # ─────────────────────────────────────────────────────────────────────
   ci-timings:
+    # Keep advisory report/artifact overhead off ordinary fork runs. Release
+    # and explicit diagnostic runs retain the report; upstream is unchanged.
     name: CI timing report
     permissions:
       contents: read
       actions: read # download completed jobs' cache transfer logs
     needs: [all-checks-pass]
-    if: always()
+    if: always() && (github.repository == 'NousResearch/hermes-agent' || github.event_name == 'workflow_dispatch' || inputs.release == true)
     runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 10
     steps:
