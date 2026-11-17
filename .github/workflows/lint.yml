@@ -38,7 +38,9 @@ concurrency:
 jobs:
   lint-diff:
     name: ruff + ty diff
-    if: inputs.event_name == 'pull_request' && inputs.python
+    # Blocking lint retains enforcement. The expensive advisory comparison
+    # is opt-in on forks; blocking lint and every test lane remain automatic.
+    if: inputs.python && (github.event_name == 'workflow_dispatch' || (github.repository == 'NousResearch/hermes-agent' && inputs.event_name == 'pull_request'))
     runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 10
     steps:
